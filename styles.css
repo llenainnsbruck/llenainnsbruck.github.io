@@ -1,0 +1,31 @@
+/* mein erstes Stylesheet */
+<style> 
+
+body {
+		font-family: sans-serif
+}
+h1, h2, h3 {
+		font-family: serif
+}
+
+.wichtig {
+	color: red;
+	font-weight: bold
+}
+
+#abbildung1
+{background-color: lime
+}
+h1 {
+		text-align:center; font-size:80px; 
+
+}
+h2 {
+		color: green;
+}
+
+figure {
+		border: 2px dotted green;
+		padding: 2em;
+}
+</style>	
