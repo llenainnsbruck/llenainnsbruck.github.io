@@ -32,20 +32,6 @@
 	<div id="map"></div>
 	
 
- <!-- -->
- 
- <!-- so haben wir es in der VL gelöst:
- var map = L.map('overviewMap');
-	map.setView([-38.3507624,176.3747501],9);
-	
-	var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png');
-	//z ist zoomfaktio [hier 9], x ist longitue, y ist lattitude
-	osm.addTo(map);
-	var marker = L.marker([-38.3507624,176.3747501]);
-	marker.addTo(map);
-	
-	-->
-
 		
 		<p class="info"> Der Lake Rotoiti ist ein größerer Gebirgssee im Nelson Lakes National Park auf der Südinsel Neuseelands </p>
 		<p class="info"> Gespeist wird er vom Travers River und fließt in den Buller River ab </p>
@@ -108,6 +94,21 @@
 
 
 <script>
+ <!-- script steht immer am Ende der Seite für ganze Seite  
+ http://leafletjs.com/examples/quick-start/, Anleitung, aber teilweise abgeändert-->
+ 
+  <!-- so haben wir es in der VL gelöst:
+ var map = L.map('overviewMap');
+	map.setView([-38.3507624,176.3747501],9);
+	
+	var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png');
+	//z ist zoomfaktio [hier 9], x ist longitue, y ist lattitude
+	osm.addTo(map);
+	var marker = L.marker([-38.3507624,176.3747501]);
+	marker.addTo(map);
+	
+	-->
+ 
 var map = L.map('map').setView([-41.8245, 172.8381], 10);
 var marker = L.marker([-41.8245, 172.8381]).addTo(map);
         
