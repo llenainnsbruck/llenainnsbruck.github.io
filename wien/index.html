@@ -15,7 +15,16 @@
     <script src="wanderwege_linien.json.js"></script>
 	<script src="maerkte_flaechen.json.js"></script>
     <!--  VV TODO: GeoJSON Datenskript für Märkte/Flächen einbinden - https://www.data.gv.at/suche/?search-term=wien+m%C3%A4rkte&searchIn=catalog -->
-
+	<script src="my_geojson.js"></script>
+	<script src="leaflet-hash.js"></script>
+	
+	<script src="leaflet.markercluster.js"></script>
+	<link rel="stylesheet" href="MarkerCluster.css" />
+	<link rel="stylesheet" href="MarkerCluster.Default.css" />
+	
+	<link rel="stylesheet" href="leaflet-routing-machine.css" />
+	<script src="leaflet-routing-machine.js"></script>
+	
     <style>
 	
 	body {
@@ -95,6 +104,9 @@
             zoom: 12
         });
 
+		
+			
+		
         // Maßstab hinzufügen
         L.control.scale({
             maxWidth: 200,
@@ -102,6 +114,8 @@
             imperial: false
         }).addTo(map);
 
+		var cluster_group = L.markerClusterGroup();
+		
         // GeoJSON Daten des Stadtspaziergangs laden und farbige Marker nach Kategorie mit Popup erstellen
         var iconByCategory = {
             1: "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png",
@@ -132,7 +146,7 @@
 			spazierTipp += '<h5>' +"Object ID: " + layer.feature.properties.OBJECTID + '<br>' + "Kategorie: " + layer.feature.properties.KATEGORIE + '</br>' + '<br>' + "Adresse: " + layer.feature.properties.ADRESSE + '</br>' + '</h5>';
             spazierTipp += '<a href="' + layer.feature.properties.WEITERE_INF + '">Infos</a>';
             return spazierTipp;
-        }).addTo(map);
+        })//.addTo(map);
 
 		
 
@@ -151,15 +165,18 @@
                         iconUrl: "http://www.data.wien.gv.at/icons/citybike.png"
 					})
 				}); 
+			},
+			onEachFeature: function (feature, layer) {
+				var bikestation = '<h5>' + '<br>' + "Bikestation: " + feature.properties.STATION + '</br>' + '<br>' + "Bezirk: "+  feature.properties.BEZIRK + '</br>' + '</h5>';
+				layer.bindTooltip(bikestation);
 			}
 			
-        }).bindPopup(function(layer) {
+        //}).bindPopup(function(layer) {
             // VV TODO: HTML-Popupfenster mit STATION und BEZIRK
 
-			var bikestation = '<h5>' + '<br>' + "Bikestation: " + layer.feature.properties.STATION + '</br>' + '<br>' + "Bezirk: "+  layer.feature.properties.BEZIRK + '</br>' + '</h5>';
-            
-            return bikestation;
-        }).addTo(map);
+            // return bikestation;
+        }).addTo(cluster_group);
+		map.addLayer(cluster_group);
 
         // GeoJSON Daten der Wanderwege laden, nach Typ einfärben und Popup erstellen
         var linienWanderwege = L.geoJSON(window.wanderwegeLinien, {
@@ -178,7 +195,7 @@
             var tipp = '<h3>' + layer.feature.properties.BEZ_TEXT + '</h3>';
             tipp += '<a href="' + layer.feature.properties.URL_INFO + '">Infos</a>';
             return tipp;
-        }).addTo(map);
+        })//.addTo(map);
 
         // GeoJSON Daten der Märkte hinzufügen - https://www.data.gv.at/suche/?search-term=wien+m%C3%A4rkte&searchIn=catalog
         // VV TODO: Flächen nach property INFOS_NACHHALTIG einfärben
@@ -212,7 +229,7 @@
 			marktflaeche += '<h5>'+ '<br>' +"Marktkategorie: " + layer.feature.properties.MARKTKATEGORIE + '</br>' + '<br>' + "Infos: " + layer.feature.properties.INFOS_NACHHALTIG + '</br>' + '</h5>';
             marktflaeche += '<a href="' + layer.feature.properties.URL_MARKTAMT + '">Link zum Markt</a>';
             return marktflaeche;
-        }).addTo(map);
+        })//.addTo(map);
 
         // WMTS-Layer Auswahl und Marker Auswahl Overlay hinzufügen
         // VV TODO: WMTS-Layer Wien, Luftbild 1956 zur Hintergrundlayerauswahl hinzufügen
@@ -227,7 +244,7 @@
             "OpenStreetMap": layers.osm
         }, {
             "Stadtspaziergang Stationen": punkteSpaziergang,
-            "Citybike Standorte": punkteCitybike,
+            "Citybike Standorte": cluster_group,
             "Wandern in und um Wien": linienWanderwege,
 			"Märkte": markt
         }).addTo(map)
@@ -235,11 +252,25 @@
         // Ausschnitt setzen
         // TODO: Ausschnitt auf Stationen des Stadtpaziergangs setzen
 		
-		//var bounds = (punkteSpaziergang.getBounds());
-        //map.fitBounds(bounds); 
+		var bounds = (punkteSpaziergang.getBounds());
+        map.fitBounds(bounds); 
 		
-		map.locate({setView: true, maxZoom: 16});
+		//map.on('locationfound', onLocationFound);
+		L.geoJSON(window.my_geojson).bindPopup(function(layer) {
+		return layer.feature.properties.color;
+		}).addTo(map);
 		
+		// map.locate({setView: true, maxZoom: 16});
+		
+		var hash = new L.Hash(map);
+		
+		L.Routing.control({
+			waypoints: [
+				L.latLng(47.26, 11.38),
+				L.latLng(48.20, 16.36)
+			]
+}).addTo(map);
+
     </script>
 
 </body>
