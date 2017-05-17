@@ -14,6 +14,8 @@
 	<script src="data/adlerwegetappe07.js"></script>
 	<script src="js/leaflet-elevation/leaflet.elevation-0.0.4.min.js"></script> 
 	<script src="https://d3js.org/d3.v3.min.js"></script>
+	
+	<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js'></script>
 
     <style>
         body {
@@ -92,12 +94,18 @@
 		
 		L.geoJSON(window.etappe07).addTo(map);
 		
-		var el = L.control.elevation();
-		el.addTo(map);
 		
-		L.geoJSON(window.etappe07, {
-			onEachFeature: el.addData.bind(el)
-			}).addTo(map);
+		omnivore.gpx('data/adlerwegetappe07').addTo(map);
+		
+		
+		//dieses Elevation dings macht rechts oben das Diagramm auf
+		//var el = L.control.elevation();
+		//el.addTo(map);
+		
+		//ohne das hier ist das Diagramm (s. eins drüber) aber leer
+		//L.geoJSON(window.etappe07, {
+		//	onEachFeature: el.addData.bind(el)
+		//	}).addTo(map);
 		
 		
 		//Icons von https://mapicons.mapsmarker.com/
