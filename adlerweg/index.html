@@ -8,9 +8,12 @@
     <title>basemap.at mit leaflet-hash Plugin</title>
 
     <link rel="stylesheet" href="js/leaflet/leaflet.css" />
+	 <link rel="stylesheet" href="js/leaflet-elevation/leaflet.elevation-0.0.4.css" />
     <script src="js/leaflet/leaflet.js"></script>
     <script src="js/leaflet-hash/leaflet-hash.js"></script>
 	<script src="data/adlerwegetappe07.js"></script>
+	<script src="js/leaflet-elevation/leaflet.elevation-0.0.4.min.js"></script> 
+	<script src="https://d3js.org/d3.v3.min.js"></script>
 
     <style>
         body {
@@ -88,6 +91,36 @@
 		//Etappe laden
 		
 		L.geoJSON(window.etappe07).addTo(map);
+		
+		var el = L.control.elevation();
+		el.addTo(map);
+		
+		L.geoJSON(window.etappe07, {
+			onEachFeature: el.addData.bind(el)
+			}).addTo(map);
+		
+		
+		//Icons von https://mapicons.mapsmarker.com/
+		var huts = [
+		L.marker([47.521785, 11.787147],{icon : L.icon({ iconUrl:'icons/hut.png'})}),
+		L.marker([47.441767, 11.762999],{icon : L.icon({ iconUrl:'icons/hut.png'})}),
+		L.marker([47.441370, 11.763703],{icon : L.icon({ iconUrl:'icons/hut.png'})}),
+		L.marker([47.443953, 11.764241],{icon : L.icon({ iconUrl:'icons/hut.png'})})
+		];
+		var hutsLayer = L.featureGroup();
+		for (var i=0; i<huts.length; i++) {
+		hutsLayer.addLayer(huts[i]);
+		};
+		// hutsLayer.addTo(map);
+		
+		//nur wenn reingezoomt wird, sollen icons angezeigt werden
+		map.on("zoomend", function () {
+			if (map.getZoom() >=15) {
+				hutsLayer.addTo(map);
+			} else {
+				map.removeLayer(hutsLayer);
+			}
+		});
 
     </script>
 
