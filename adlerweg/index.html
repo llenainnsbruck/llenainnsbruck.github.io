@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-    <title>basemap.at mit leaflet-hash Plugin</title>
+    <title>Adlerweg-Etappe 7: Steinberg am Rofan – Erfurter Hütte</title>
 
     <link rel="stylesheet" href="js/leaflet/leaflet.css" />
 	 <link rel="stylesheet" href="js/leaflet-elevation/leaflet.elevation-0.0.4.css" />
@@ -22,15 +22,31 @@
             padding: 0px;
             margin: 0px;
         }
-        html, body, #map {
+        html, body {
             height: 100vh;
             width: 100vw;
+		}	
+			#map {
+			width: 1024px;
+			height: 600px;
+			border: 1px solid blue
         }
+		
+		
+		 
     </style>
 </head>
 
 <body>
-    <div id="map"></div>
+
+<h1> Adlerweg-Etappe 7: Steinberg am Rofan – Erfurter Hütte </h1>
+<h4> Von Steinberg am Rofan führt diese anspruchsvolle Adlerweg-Etappe über fast 1.600 Höhenmeter zur Erfurter Hütte. Die Route entlang des Rofangebirges ist landschaftlich äußerst reizvoll: Auf der einen Seite haben die Berge steile Felswände, auf der anderen sind sie mit sanften Almmatten gepolstert. </h4>
+
+   <div id="map"></div>
+<a href = "http://www.tirol.at/reisefuehrer/sport/wandern/wandertouren/a-adlerweg-etappe-7-jausenstation-waldhaeusl-erfurter-huette"> Mehr Infos: Adlerweg-Etappe 07: Jausenstation Waldhäusl - Erfurter Hütte </a>
+
+ <p class="author"> Lena Grüb <a href="https://llenainnsbruck.github.io/adlerweg/index.html"> Link zur Github-Seite der Bearbeiterin</a></p>
+	
 
     <script>
         // WMTS-Layer basemap.at - Quelle: http://www.basemap.at/wmts/1.0.0/WMTSCapabilities.xml
