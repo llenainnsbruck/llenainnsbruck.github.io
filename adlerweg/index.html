@@ -45,7 +45,7 @@
    <div id="map"></div>
 <a href = "http://www.tirol.at/reisefuehrer/sport/wandern/wandertouren/a-adlerweg-etappe-7-jausenstation-waldhaeusl-erfurter-huette"> Mehr Infos: Adlerweg-Etappe 07: Jausenstation Waldhäusl - Erfurter Hütte </a>
 
- <p class="author"> Lena Grüb <a href="https://llenainnsbruck.github.io/adlerweg/index.html"> Link zur Github-Seite der Bearbeiterin</a></p>
+ <p class="author"> Autorin: Lena Grüb <a href="https://llenainnsbruck.github.io/adlerweg/index.html"> Link zur Github-Seite der Autorin</a></p>
 	
 
     <script>
@@ -112,6 +112,10 @@
 		
 		
 		omnivore.gpx('data/adlerwegetappe07').addTo(map);
+		
+		//Popup hinzufügen
+		var markup = '<h3> Adlerweg-Etappe 7: Steinberg am Rofan – Erfurter Hütte </h3>';
+		gpxTrack.bindPopup(markup, { maxWidth : 450 });
 		
 		
 		//dieses Elevation dings macht rechts oben das Diagramm auf
