@@ -91,7 +91,6 @@
             imperial: false
         }).addTo(map);
 		
-		
 
         // WMTS-Layer Auswahl hinzufügen
         var layerControl = L.control.layers({
@@ -106,27 +105,54 @@
         // leaflet-hash aktivieren
         var hash = new L.Hash(map);
 		
-		//Etappe laden
+		//Etappe laden (erfüllt gleiche Funktion wie "GPX Track laden" eins weiter unten)
+		//L.geoJSON(window.etappe07).addTo(map);
 		
-		L.geoJSON(window.etappe07).addTo(map);
+		 // GPX Track laden
+        gpxTrack = omnivore.gpx('data/AdlerwegEtappe07.gpx').addTo(map);
 		
-		
-		omnivore.gpx('data/adlerwegetappe07').addTo(map);
+		//omnivore.gpx('data/adlerwegetappe07').addTo(map);
 		
 		//Popup hinzufügen
 		var markup = '<h3> Adlerweg-Etappe 7: Steinberg am Rofan – Erfurter Hütte </h3>';
 		gpxTrack.bindPopup(markup, { maxWidth : 450 });
 		
 		
-		//dieses Elevation dings macht rechts oben das Diagramm auf
-		//var el = L.control.elevation();
-		//el.addTo(map);
+		//dieses Elevation dings macht das (leere) Diagramm auf
+		var profil = L.control.elevation({
+		position : 'bottomleft',
+		});
+		profil.addTo(map);
 		
 		//ohne das hier ist das Diagramm (s. eins drüber) aber leer
-		//L.geoJSON(window.etappe07, {
-		//	onEachFeature: el.addData.bind(el)
-		//	}).addTo(map);
+		L.geoJSON(window.etappe07, {
+		onEachFeature: profil.addData.bind(profil)
+		}).addTo(map);
 		
+		// Popup hinzufügen
+            var markup = '<h3>Adlerweg-Etappe 7: Steinberg am Rofan – Erfurter Hütte</h3>';
+            markup += '<p>Von Steinberg am Rofan führt diese anspruchsvolle Adlerweg-Etappe über fast 1.600 Höhenmeter zur Erfurter Hütte. Die Route entlang des Rofangebirges ist landschaftlich äußerst reizvoll: Auf der einen Seite haben die Berge steile Felswände, auf der anderen sind sie mit sanften Almmatten gepolstert.</p>'
+            markup += '<li>Ausgangspunkt: Gasthof Waldhäusl</li>';
+            markup += '<li>Endpunkt: Erfurter Hütte</li>';
+            markup += '<li>Höhenmeter bergauf: 1590</li>';
+            markup += '<li>Höhenmeter bergab: 770</li>';
+            markup += '<li>Höchster Punkt: 2192</li>';
+            markup += '<li>Schwierigkeitsgrad: schwierig</li>';
+            markup += '<li>Streckenlänge (in km): 18</li>';
+            markup += '<li>Gehzeit (in Stunden): 7</li>';
+            markup += '<li>Einkehrmöglichkeiten: Gasthof Waldhäusl, Erfurter Hütte, Berggasthof Rofan, Mauritzalm</li>';
+            gpxTrack.bindPopup(markup, { maxWidth : 450 });
+		
+		
+		
+		// Ausschnitt setzen (funktioniert nicht??????????????????)
+           //map.fitBounds(gpxTrack.getBounds()); -------->Bounds are not valid
+		
+		
+		// Höhenprofil erzeugen
+            gpxTrack.eachLayer(function(layer) {
+                profil.addData(layer.feature);
+            });
 		
 		//Icons von https://mapicons.mapsmarker.com/
 		var huts = [
@@ -140,7 +166,7 @@
 		hutsLayer.addLayer(huts[i]);
 		};
 		// hutsLayer.addTo(map);
-		
+
 		//nur wenn reingezoomt wird, sollen icons angezeigt werden
 		map.on("zoomend", function () {
 			if (map.getZoom() >=15) {
@@ -149,6 +175,20 @@
 				map.removeLayer(hutsLayer);
 			}
 		});
+		
+		var start = [
+		L.marker([47.521785, 11.787147],{icon : L.icon({ iconUrl:'icons/start-race-2.png'})})
+		];
+		start.addTo(map);
+		
+		//var start = L.featureGroup();
+		//for (var i=0; i<start.length; i++) {
+		//start.addLayer(start[i]);
+		//};
+		
+		
+		//Adlerblicke: Tourismusverband Achensee	Am Rofan, neben dem Almstüberl, gegenüber der Rofanseilbahn Bergstation	1831	47°26'29.54"N 	11°45'49.10"E
+
 
     </script>
 
