@@ -40,12 +40,12 @@
 <body>
 
 <h1> Adlerweg-Etappe 7: Steinberg am Rofan – Erfurter Hütte </h1>
-<p> Von Steinberg am Rofan führt diese anspruchsvolle Adlerweg-Etappe über fast 1.600 Höhenmeter zur Erfurter Hütte. Die Route entlang des Rofangebirges ist landschaftlich äußerst reizvoll: Auf der einen Seite haben die Berge steile Felswände, auf der anderen sind sie mit sanften Almmatten gepolstert. </p>
+<h4> Von Steinberg am Rofan führt diese anspruchsvolle Adlerweg-Etappe über fast 1.600 Höhenmeter zur Erfurter Hütte. Die Route entlang des Rofangebirges ist landschaftlich äußerst reizvoll: Auf der einen Seite haben die Berge steile Felswände, auf der anderen sind sie mit sanften Almmatten gepolstert. </h4>
 
    <div id="map"></div>
-<p class="author"> Mehr Infos zur Etappe 07: Jausenstation Waldhäusl - Erfurter Hütte finden Sie <a href ="http://www.tirol.at/reisefuehrer/sport/wandern/wandertouren/a-adlerweg-etappe-7-jausenstation-waldhaeusl-erfurter-huette"> hier </a>.</p>
+<a href = "http://www.tirol.at/reisefuehrer/sport/wandern/wandertouren/a-adlerweg-etappe-7-jausenstation-waldhaeusl-erfurter-huette"> Mehr Infos: Adlerweg-Etappe 07: Jausenstation Waldhäusl - Erfurter Hütte </a>
 
- <p class="author"><a href="https://llenainnsbruck.github.io/adlerweg/index.html">Hier </a> der Link zur Seite der Autorin Lena Grüb</p>
+ <p class="author"> Autorin: Lena Grüb <a href="https://llenainnsbruck.github.io/adlerweg/index.html"> Link zur Github-Seite der Autorin</a></p>
 	
 
     <script>
@@ -120,7 +120,7 @@
 		
 		//dieses Elevation dings macht das (leere) Diagramm auf
 		var profil = L.control.elevation({
-		position : 'topleft',
+		position : 'bottomleft',
 		});
 		profil.addTo(map);
 		
@@ -162,51 +162,34 @@
             });
 		
 		//Icons von https://mapicons.mapsmarker.com/
-		var einkehr = [
-		L.marker([47.521770, 11.787190],{title: "Pension Waldhäusl", icon : L.icon({ iconUrl:'icons/hut.png'})}),
-		L.marker([47.441767, 11.762999],{title: "Erfurter Hütte", icon : L.icon({ iconUrl:'icons/hut.png'})}),
-		L.marker([47.441370, 11.763703],{title: "Berggasthof Rofan", icon : L.icon({ iconUrl:'icons/hut.png'})}),
-		L.marker([47.443953, 11.764241],{title: "Mauritzalm", icon : L.icon({ iconUrl:'icons/hut.png'})})
+		var huts = [
+		L.marker([47.521785, 11.787147],{icon : L.icon({ iconUrl:'icons/hut.png'})}),
+		L.marker([47.441767, 11.762999],{icon : L.icon({ iconUrl:'icons/hut.png'})}),
+		L.marker([47.441370, 11.763703],{icon : L.icon({ iconUrl:'icons/hut.png'})}),
+		L.marker([47.443953, 11.764241],{icon : L.icon({ iconUrl:'icons/hut.png'})})
 		];
-		var einkehrLayer = L.featureGroup();
-		for (var i=0; i<einkehr.length; i++) {
-		einkehrLayer.addLayer(einkehr[i]);
+		var hutsLayer = L.featureGroup();
+		for (var i=0; i<huts.length; i++) {
+		hutsLayer.addLayer(huts[i]);
 		};
-		// einkehrLayer.addTo(map);
-		
-		
-		var start = 
-		L.marker([47.521785, 11.787160], {title: "Startpunkt", icon: L.icon({iconUrl: 'icons/start-race-2.png'})})
-		;
-		
-		var ende = 
-		L.marker([47.441767, 11.762950], {title: "Endpunkt", icon: L.icon({iconUrl: 'icons/finish.png'})})
-		;
-		
-		var adlerblick = 
-		L.marker([47.441539, 11.763639], {title: "Aussichtspunkt", icon: L.icon({iconUrl: 'icons/panoramicview.png'})})
-		;
-		
-		
-		//.addTo(map);
-		
+		// hutsLayer.addTo(map);
+
 		//nur wenn reingezoomt wird, sollen icons angezeigt werden
 		map.on("zoomend", function () {
 			if (map.getZoom() >=15) {
-				einkehrLayer.addTo(map);
-				start.addTo(map);
-				ende.addTo(map);
-				adlerblick.addTo(map);
+				hutsLayer.addTo(map);
 			} else {
-				map.removeLayer(einkehrLayer);
-				map.removeLayer(start);
-				map.removeLayer(ende);
-				map.removeLayer(adlerblick);
+				map.removeLayer(hutsLayer);
 			}
 		});
 		
 		
-		
+		var start = L.icon({
+		iconUrl: 'icons/start-race-2.png',
+		//popupAnchor: [-3, -76],
+		});
+		L.marker([47.521785, 11.787160
+		], {icon: start}).addTo(map);
 		
 		
 		
