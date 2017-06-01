@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>Die acht schönsten Mountainbiketouren in Tirol</title>
+
+	
+	<script src="bikedata"></script> 
+    <link rel="stylesheet" href="js/leaflet/leaflet.css" />
+	<link rel="stylesheet" href="js/leaflet-elevation/leaflet.elevation-0.0.4.css" />
+    <script src="js/leaflet/leaflet.js"></script>
+    <script src="js/leaflet-hash/leaflet-hash.js"></script>
+	<script src="js/leaflet-elevation/leaflet.elevation-0.0.4.min.js"></script> 
+	<script src="https://d3js.org/d3.v3.min.js"></script>
+	<!-- <script src="etappeninfo.js"></script> -->
+	<!-- <script src="map.js"></script> --> 
+	<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.2.0/leaflet-omnivore.min.js'></script>
+
+	
+    <style>
+        body {
+            padding: 0px;
+            margin: 0px;
+        }
+        html, body {
+            height: 100vh;
+            width: 100vw;
+		}	
+			#map {
+			width: 800px;
+			height: 500px;
+			border: 1px solid black
+        }
+		
+		
+		 
+    </style>
+</head>
+
+
+<body>
+
+<h1>Mountainbiken in Tirol </h1>
+
+<h4>Ein Überblick über die schönsten Touren in Tirol </h4>
+<h4>Hier unsere Top 8: </h4>
+   <div id="map"></div>
+  
+	
+	
+   
+   <!-- <select id="etappen">
+		<option value="AdlerwegEtappe01.gpx">Adlerweg Etappe 1</option>
+		<option value="AdlerwegEtappe02.gpx">Adlerweg Etappe 2</option>
+		<option value="AdlerwegEtappe03.gpx">Adlerweg Etappe 3</option>
+		<option value="AdlerwegEtappe04.gpx">Adlerweg Etappe 4</option>
+		<option value="AdlerwegEtappe05.gpx">Adlerweg Etappe 5</option>
+		<option value="AdlerwegEtappe06.gpx">Adlerweg Etappe 6</option>
+		<option value="AdlerwegEtappe07.gpx">Adlerweg Etappe 7</option>
+		<option value="AdlerwegEtappe08.gpx">Adlerweg Etappe 8</option>
+		<option value="AdlerwegEtappe09.gpx">Adlerweg Etappe 9</option>
+		<option value="AdlerwegEtappe10.gpx">Adlerweg Etappe 10</option>
+		<option value="AdlerwegEtappe11.gpx">Adlerweg Etappe 11</option>
+		<option value="AdlerwegEtappe12.gpx">Adlerweg Etappe 12</option>
+		<option value="AdlerwegEtappe13.gpx">Adlerweg Etappe 13</option>
+		<option value="AdlerwegEtappe14.gpx">Adlerweg Etappe 14</option>
+		<option value="AdlerwegEtappe15.gpx">Adlerweg Etappe 15</option>
+		<option value="AdlerwegEtappe16.gpx">Adlerweg Etappe 16</option>
+		<option value="AdlerwegEtappe17.gpx">Adlerweg Etappe 17</option>
+		<option value="AdlerwegEtappe18.gpx">Adlerweg Etappe 18</option>
+		<option value="AdlerwegEtappe19.gpx">Adlerweg Etappe 19</option>
+		<option value="AdlerwegEtappe20.gpx">Adlerweg Etappe 20</option>
+		<option value="AdlerwegEtappe21.gpx">Adlerweg Etappe 21</option>
+		<option value="AdlerwegEtappe22.gpx">Adlerweg Etappe 22</option>
+		<option value="AdlerwegEtappe23.gpx">Adlerweg Etappe 23</option>
+		<option value="AdlerwegEtappe24.gpx">Adlerweg Etappe 24</option>
+		<option value="AdlerwegEtappe25.gpx">Adlerweg Etappe 25</option>
+   
+   </select> -->
+   
+
+
+ <p class="author"><a href="https://llenainnsbruck.github.io/adlerweg/index.html">Hier </a> der Link zur Seite der Autoren Tabea Hengst, Matthias v. Stackelberg Lena Grüb</p>
+	
+
+    <script>
+ var layers = {
+            geolandbasemap: L.tileLayer("https://{s}.wien.gv.at/basemap/geolandbasemap/normal/google3857/{z}/{y}/{x}.png", {
+                subdomains: ['maps', 'maps1', 'maps2', 'maps3', 'maps4'],
+                attribution: 'Datenquelle: <a href="http://www.basemap.at/">basemap.at</a>'
+            }),
+            bmapgrau: L.tileLayer("https://{s}.wien.gv.at/basemap/bmapgrau/normal/google3857/{z}/{y}/{x}.png", {
+                subdomains: ['maps', 'maps1', 'maps2', 'maps3', 'maps4'],
+                attribution: 'Datenquelle: <a href="http://www.basemap.at/">basemap.at</a>'
+            }),
+            bmapoverlay: L.tileLayer("https://{s}.wien.gv.at/basemap/bmapoverlay/normal/google3857/{z}/{y}/{x}.png", {
+                subdomains: ['maps', 'maps1', 'maps2', 'maps3', 'maps4'],
+                attribution: 'Datenquelle: <a href="http://www.basemap.at/">basemap.at</a>'
+            }),
+            bmaphidpi: L.tileLayer("https://{s}.wien.gv.at/basemap/bmaphidpi/normal/google3857/{z}/{y}/{x}.jpeg", {
+                subdomains: ['maps', 'maps1', 'maps2', 'maps3', 'maps4'],
+                attribution: 'Datenquelle: <a href="http://www.basemap.at/">basemap.at</a>'
+            }),
+            bmaporthofoto30cm: L.tileLayer("https://{s}.wien.gv.at/basemap/bmaporthofoto30cm/normal/google3857/{z}/{y}/{x}.jpeg", {
+                subdomains: ['maps', 'maps1', 'maps2', 'maps3', 'maps4'],
+                attribution: 'Datenquelle: <a href="http://www.basemap.at/">basemap.at</a>'
+            }),
+            osm: L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                subdomains: ['a', 'b', 'c'],
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            })
+        };
+		
+		 // Karte definieren
+        var map = L.map('map', {
+            layers: [layers.geolandbasemap],
+            center : [47.35, 11.7],
+            zoom : 9
+        });
+
+        // Maßstab hinzufügen
+        L.control.scale({
+            maxWidth: 200,
+            metric: true,
+            imperial: false
+        }).addTo(map);
+		
+
+        // WMTS-Layer Auswahl hinzufügen
+        var layerControl = L.control.layers({
+            "basemap.at - STANDARD": layers.geolandbasemap,
+            "basemap.at - GRAU": layers.bmapgrau,
+            "basemap.at - OVERLAY": layers.bmapoverlay,
+            "basemap.at - HIGH-DPI": layers.bmaphidpi,
+            "basemap.at - ORTHOFOTO": layers.bmaporthofoto30cm,
+            "OpenStreetMap": layers.osm,
+        }).addTo(map);
+
+		
+		
+		
+		 // GPX Track laden
+			gpxTrack = omnivore.gpx('bikedata/Guffertrunde.gpx').addTo(map);
+			gpxTrack = omnivore.gpx('bikedata/Karwendel.gpx').addTo(map);
+			gpxTrack = omnivore.gpx('bikedata/Maria Waldrast.gpx').addTo(map);
+			gpxTrack = omnivore.gpx('bikedata/Marienbergjoch.gpx').addTo(map);
+			gpxTrack = omnivore.gpx('bikedata/Pillerseetal.gpx').addTo(map);
+			gpxTrack = omnivore.gpx('bikedata/Vorderes Oetztal.gpx').addTo(map);
+			gpxTrack = omnivore.gpx('bikedata/Hohe Salve.gpx').addTo(map);
+			gpxTrack = omnivore.gpx('bikedata/Kaiserwinkl.gpx').addTo(map);
+
+
+		//Popup hinzufügen ----------------funktioniert so nicht
+			var markup = layer.feature.properties;
+			gpxTrack.bindPopup(markup, { maxWidth : 40});
+			
+			
+			
+
+    </script>
+
+</body>
+
+</html>
